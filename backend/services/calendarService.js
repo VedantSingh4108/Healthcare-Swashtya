@@ -1,11 +1,19 @@
 const { google } = require('googleapis');
-
 const path = require('path');
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, '../service-account.json'),
-  scopes: ['https://www.googleapis.com/auth/calendar'],
-});
+let auth;
+if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+  });
+} else {
+  auth = new google.auth.GoogleAuth({
+    keyFile: path.join(__dirname, '../service-account.json'),
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+  });
+}
 
 const calendar = google.calendar({ version: 'v3', auth });
 
