@@ -4,6 +4,12 @@
 
 ---
 
+## 🔗 Live Links & Resources
+
+- **🌍 Live Deployment (Vercel):** https://healthcare-swashtya.vercel.app/
+
+---
+
 ## ✨ Key Features
 
 - **🎨 Premium UI/UX:** Built with Tailwind CSS and Framer Motion, featuring seamless Dark/Light mode toggling, frosted glassmorphism cards, and a zero-lag HTML5 Canvas bouncing ball physics background.
@@ -170,12 +176,50 @@ GEMINI_API_KEY=your_google_gemini_api_key
 
 ## 📧 Google Calendar & Email Setup
 
-### Google Apps Script (Email Webhook)
-To bypass cloud provider SMTP blocks (like Render):
-1. Go to [script.google.com](https://script.google.com/).
-2. Create a new script with a `doPost(e)` function that utilizes `MailApp.sendEmail()`.
-3. Deploy as a Web App -> Access: "Anyone".
-4. Copy the Web App URL and set it as `GOOGLE_SCRIPT_URL` in the Backend `.env`.
+### Google Apps Script Setup (Bypassing Cloud SMTP Blocks)
+Because cloud hosting providers like Render block standard SMTP ports (25, 465, 587) to prevent spam, Swasthya routes emails through a secure Google Apps Script Web App.
+
+1. Go to [script.google.com](https://script.google.com/) and create a New Project.
+2. Paste the following code into `Code.gs`:
+
+```javascript
+function doPost(e) {
+  try {
+    // Parse the incoming JSON payload from your Node.js backend
+    var data = JSON.parse(e.postData.contents);
+    var recipient = data.to;
+    var subject = data.subject;
+    var body = data.body;
+
+    // Send the email using Google's native MailApp service
+    MailApp.sendEmail({
+      to: recipient,
+      subject: subject,
+      htmlBody: body // or body for plain text
+    });
+
+    // Return a success response back to the Node.js backend
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "success", message: "Email sent successfully" }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    // Return an error response if something fails
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "error", message: error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+```
+
+3. Click **Deploy -> New Deployment**.
+4. Select type: **Web App**.
+5. Description: `Swasthya Email Webhook`
+6. Execute as: **Me** (your Google account)
+7. Who has access: **Anyone** (this is critical so your Node.js backend can reach it without authentication errors).
+8. Authorize the script when prompted.
+9. Copy the resulting Web App URL and add it to your Render Environment Variables as:
+   `GOOGLE_SCRIPT_URL=your_copied_web_app_url`
 
 ### Google Calendar Service Account
 1. Go to Google Cloud Console -> IAM & Admin -> Service Accounts.
