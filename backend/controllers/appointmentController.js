@@ -21,7 +21,8 @@ const createAppointment = async (req, res) => {
 
     // Call AI Pre-Visit Service
     try {
-      const aiRes = await fetch('http://localhost:5000/api/ai/pre-visit', {
+      const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:5000';
+      const aiRes = await fetch(`${aiServiceUrl}/api/ai/pre-visit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ symptoms })
@@ -182,7 +183,8 @@ const completeAppointment = async (req, res) => {
     let postVisitSummary = "Summary unavailable. Please refer to clinical notes.";
 
     try {
-      const aiRes = await fetch('http://localhost:5000/api/ai/post-visit', {
+      const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:5000';
+      const aiRes = await fetch(`${aiServiceUrl}/api/ai/post-visit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notes: clinical_notes, prescription: prescription })

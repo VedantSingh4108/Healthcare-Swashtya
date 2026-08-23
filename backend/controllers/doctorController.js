@@ -217,7 +217,8 @@ const getPatientSummary = async (req, res) => {
 
     let summary = 'Failed to generate summary.';
     try {
-      const aiRes = await axios.post('http://localhost:5000/api/ai/patient-history', aiPayload);
+      const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:5000';
+      const aiRes = await axios.post(`${aiServiceUrl}/api/ai/patient-history`, aiPayload);
       if (aiRes.data && aiRes.data.summary) {
         summary = aiRes.data.summary;
       }
