@@ -1,0 +1,34 @@
+# Environment variables (All folders)
+.env
+.env.*
+!.env.example
+
+# Credentials & Service Accounts
+service-account.json
+*.pem
+*.key
+
+# Node Modules (Backend, Frontend, Root)
+node_modules/
+
+# Python Virtual Environments & Cache (AI Service)
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Build and IDE files
+dist/
+build/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+coverage/
