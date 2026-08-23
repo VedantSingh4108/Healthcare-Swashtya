@@ -1,7 +1,5 @@
 # Swasthya 🏥 - AI-Driven Healthcare Appointment Manager
 
-![Swasthya Banner](https://via.placeholder.com/1200x400.png?text=Swasthya+Healthcare+Manager)
-
 **Swasthya** is a top-tier, full-stack healthcare management platform engineered to streamline the entire clinical workflow. Designed with a premium Glassmorphism aesthetic, it empowers Patients, Doctors, and Administrators through Role-Based Access Control (RBAC), intelligent AI integrations via Google Gemini, automated Google Calendar syncing, and robust background cron jobs for medication reminders.
 
 ---
